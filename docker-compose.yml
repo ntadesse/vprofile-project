@@ -3,7 +3,7 @@ services:
   vprodb:
     build: 
       context: ./Docker-files/db
-    image: ntaddese/vprofiledb_n
+    image: ntaddese/vprofiledb
     container_name: vprodb
     ports:
       - "3306:3306"
@@ -28,7 +28,7 @@ services:
   vproapp:
     build: 
       context: ./Docker-files/app
-    image: ntaddese/vprofileapp_n
+    image: ntaddese/vprofileapp
     container_name: vproapp
     ports:
       - "8080:8080"
@@ -38,7 +38,7 @@ services:
   vproweb:
     build: 
       context: ./Docker-files/web
-    image: ntaddese/vprofileweb_n
+    image: ntaddese/vprofileweb
     container_name: vproweb
     ports:
       - "80:80"
@@ -46,4 +46,3 @@ services:
 volumes:
    vprodbdata: {}   # create volume in the docker engine of the container
    vproappdata: {}  # create volume in the docker engine of the container
-  
