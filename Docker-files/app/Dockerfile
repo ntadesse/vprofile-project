@@ -1,4 +1,4 @@
-FROM openjdk:11 BUILD_IMAGE
+FROM openjdk:11 AS BUILD_IMAGE
 LABEL "Project"="Vprofile"
 LABEL "Author"="Natnael"
 RUN apt update && apt install maven -y
