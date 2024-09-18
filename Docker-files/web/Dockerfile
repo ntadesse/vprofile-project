@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx
 LABEL "Project"="Vprofile"
 LABEL "Author"="Natnael"
 
