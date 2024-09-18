@@ -1,49 +1,13 @@
-version: '3.8'
-services:
-  vprodb:
-    build: 
-      context: ./Docker-files/db
-    image: ntaddese/vprofiledb_n
-    container_name: vprodb
-    ports:
-      - "3306:3306"
-    volumes:
-      - vprodbdata:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=vprodbpass
+FROM openjdk:11 BUILD_IMAGE
+LABEL "Project"="Vprofile"
+LABEL "Author"="Natnael"
+RUN apt update && apt install maven -y
+RUN git clone https://github.com/ntadesse/vprofile-project.git
+RUN cd vprofile-project && git checkout containers && mvn install
 
-  vprocache01:
-    image: memcached
-    ports:
-      - "11211:11211"
+FROM tomcat:9-jrell
+RUN rm -rf /usr/local/tomcat/webapps/*
+COPY --from=BUILD_IMAGE vprofile-project/target.vprofile-v2.war /usr/local/tomcat/webapps/ROOT.war
 
-  vpromq01:
-    image: rabbitmq
-    ports:
-      - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
-
-  vproapp:
-    build: 
-      context: ./Docker-files/app
-    image: ntaddese/vprofileapp_n
-    container_name: vproapp
-    ports:
-      - "8080:8080"
-    volumes:
-      - vproappdata:/usr/local/tomcat/webapps
-    
-  vproweb:
-    build: 
-      context: ./Docker-files/web
-    image: ntaddese/vprofileweb_n
-    container_name: vproweb
-    ports:
-      - "80:80"
-
-volumes:
-   vprodbdata: {}   # create volume in the docker engine of the container
-   vproappdata: {}  # create volume in the docker engine of the container
-  
+EXPOSE 8080
+CMD CMD ["catalina.sh", "run"]
