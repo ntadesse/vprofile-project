@@ -1,7 +1,7 @@
 FROM openjdk:11 AS BUILD_IMAGE
 LABEL "Project"="Vprofile"
 LABEL "Author"="Natnael"
-RUN apt update && apt install maven -y
+RUN apt update && apt install maven git -y
 RUN git clone https://github.com/ntadesse/vprofile-project.git
 RUN cd vprofile-project && git checkout containers && mvn install
 
